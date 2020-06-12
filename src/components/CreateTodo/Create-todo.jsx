@@ -1,126 +1,99 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
+import { Row, Form, Input, Button, Radio } from "antd";
+import { CreateTodoContainer } from "./style";
 
+function CreateTodo() {
+  const [todoDescription, setTodoDescription] = useState("");
+  const [todoResponsible, setTodoResponsible] = useState("");
+  const [todoPriority, setTodoPriority] = useState("");
+  const [todoCompleted, setTodoCompleted] = useState(false);
 
-export default class CreateTodo extends Component {
-    constructor(props) {
-        super(props);
-        this.onChangeTodoDescription = this.onChangeTodoDescription.bind(this);
-        this.onChangeTodoResponsible = this.onChangeTodoResponsible.bind(this);
-        this.onChangeTodoPriority = this.onChangeTodoPriority.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.state = {
-            todo_description: '',
-            todo_responsible: '',
-            todo_priority: '',
-            todo_completed: false
-        }
-    }
-    onChangeTodoDescription(e) {
-        this.setState({
-            todo_description: e.target.value
-        });
-    }
-    onChangeTodoResponsible(e) {
-        this.setState({
-            todo_responsible: e.target.value
-        });
-    }
-    onChangeTodoPriority(e) {
-        this.setState({
-            todo_priority: e.target.value
-        });
-    }
-    onSubmit(e) {
-        e.preventDefault();
+  const layout = {
+    labelCol: { span: 10 },
+    wrapperCol: { span: 14 },
+  };
 
-        console.log(`Form submitted:`);
-        console.log(`Todo Description: ${this.state.todo_description}`);
-        console.log(`Todo Responsible: ${this.state.todo_responsible}`);
-        console.log(`Todo Priority: ${this.state.todo_priority}`);
+  const onFinish = (values) => {
+    const newTodo = {
+      todo_description: values.todoDescription,
+      todo_responsible: values.todoResponsible,
+      todo_priority: todoPriority,
+      todo_completed: todoCompleted,
+    };
+    axios
+      .post("http://localhost:4000/todos/add/", newTodo)
+      .then((res) => {
+        console.log(res.data);
+        setTodoCompleted(false);
+        setTodoDescription("");
+        setTodoResponsible("");
+        setTodoPriority("");
+        window.location.assign("/");
+      })
+      .catch((err) => console.log(err));
+  };
 
-        const newTodo = {
-            todo_description: this.state.todo_description,
-            todo_responsible: this.state.todo_responsible,
-            todo_priority: this.state.todo_priority,
-            todo_completed: this.state.todo_completed
-        };
-    
-        axios.post('http://localhost:4000/todos/add/', newTodo)
-            .then(res => console.log(res.data));
+  const onChange = (e) => {
+    setTodoPriority(e.target.value);
+  };
+  return (
+    <Row gutter={[16, 16]}>
+      <CreateTodoContainer>
+        <h2> Create Todo </h2>
+        <Row className="form">
+          <Form
+            {...layout}
+            name="basic"
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+          >
+            <Form.Item
+              label="CreateTodo"
+              name="todoDescription"
+              rules={[{ required: true, message: "Please input todo!" }]}
+              value={todoDescription}
+            >
+              <Input value={todoDescription} />
+            </Form.Item>
 
-        this.setState({
-            todo_description: '',
-            todo_responsible: '',
-            todo_priority: '',
-            todo_completed: false
-        })
+            <Form.Item
+              label="ToDoResponsible"
+              name="todoResponsible"
+              rules={[{ required: true, message: "Please input responsive!" }]}
+              value={todoResponsible}
+            >
+              <Input value={todoResponsible} />
+            </Form.Item>
 
-        // this.props.history.push('/')
-        window.location.assign('/');
-    }
-    render() {
-        return (
-            <div style={{ marginTop: 10 }}>
-                <h3>Create New Todo</h3>
-                <form onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                        <label>Description: </label>
-                        <input type="text"
-                            className="form-control"
-                            value={this.state.todo_description}
-                            onChange={this.onChangeTodoDescription}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Responsible: </label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            value={this.state.todo_responsible}
-                            onChange={this.onChangeTodoResponsible}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <div className="form-check form-check-inline">
-                            <input className="form-check-input"
-                                type="radio"
-                                name="priorityOptions"
-                                id="priorityLow"
-                                value="Low"
-                                checked={this.state.todo_priority === 'Low'}
-                                onChange={this.onChangeTodoPriority}
-                            />
-                            <label className="form-check-label">Low</label>
-                        </div>
-                        <div className="form-check form-check-inline">
-                            <input className="form-check-input"
-                                type="radio"
-                                name="priorityOptions"
-                                id="priorityMedium"
-                                value="Medium"
-                                checked={this.state.todo_priority === 'Medium'}
-                                onChange={this.onChangeTodoPriority}
-                            />
-                            <label className="form-check-label">Medium</label>
-                        </div>
-                        <div className="form-check form-check-inline">
-                            <input className="form-check-input"
-                                type="radio"
-                                name="priorityOptions"
-                                id="priorityHigh"
-                                value="High"
-                                checked={this.state.todo_priority === 'High'}
-                                onChange={this.onChangeTodoPriority}
-                            />
-                            <label className="form-check-label">High</label>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <input type="submit" value="Create Todo" className="btn btn-primary" />
-                    </div>
-                </form>
-            </div>
-        )
-    }
+            <Row className="radio">
+              <Radio.Group
+                onChange={onChange}
+                value={todoPriority}
+                label="todoPriority"
+              >
+                <Radio value="Low" checked={todoPriority === "Low"}>
+                  Low
+                </Radio>
+                <Radio value="Medium" checked={todoPriority === "Medium"}>
+                  Medium
+                </Radio>
+                <Radio value="High" checked={todoPriority === "High"}>
+                  High
+                </Radio>
+              </Radio.Group>
+            </Row>
+
+            <Row className="button">
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Row>
+          </Form>
+        </Row>
+      </CreateTodoContainer>
+    </Row>
+  );
 }
+
+export default CreateTodo;

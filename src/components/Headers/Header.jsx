@@ -136,7 +136,7 @@ function Header() {
       <Col span={16}>
         <a href="https://github.com/DucSilva" target="_blank">
           <img src={logo} width="30" height="30" alt="duc-silva" />
-          <Link to="/">MERN-Stack Todo App</Link>
+          <Link to="/">ToDo App</Link>
         </a>
       </Col>
       <Col span={8}>

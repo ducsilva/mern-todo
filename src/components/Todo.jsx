@@ -1,50 +1,36 @@
 import React from "react";
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { Link, Redirect } from "react-router-dom";
+import axios from "axios";
 
-import ConfirmStatusChange from './Delete-todo';
-import "@reach/dialog/styles.css"
-import "../index.css"
+import "@reach/dialog/styles.css";
+import "../index.css";
+import { Button, Popconfirm, Row, Col, message } from "antd";
 
-class Todo extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            select: "open"
-        }
-    }
+function Todo(props) {
+  const handleSubmit = () => {
+    axios
+      .delete("http://localhost:4000/todos/delete/" + props.todo._id)
+      .then((res) => message.success("Delete todo success!"));
+    // window.location.assign("/");
+  };
 
-    handleSubmit = () => {
-        axios.delete('http://localhost:4000/todos/delete/' + this.props.todo._id)
-        .then(res => console.log(res.data));
-        window.location.assign('/')
-    }
-
-    handleStatusChange = event => {
-        this.setState({ select: event.target.value })
-    }
-
-    handleReset = event => alert("Resetted")
-
-    render() {
-        return (
-            <tr>
-                <td className={this.props.todo.todo_completed ? 'completed' : ''}>{this.props.todo.todo_description}</td>
-                <td className={this.props.todo.todo_completed ? 'completed' : ''}>{this.props.todo.todo_responsible}</td>
-                <td className={this.props.todo.todo_completed ? 'completed' : ''}>{this.props.todo.todo_priority}</td>
-                <td className="table-action">
-                    <Link to={"/edit/" + this.props.todo._id} className="btn btn-success mr-2">Edit</Link>
-                    <ConfirmStatusChange title={`"Are you sure delete ${this.props.todo.todo_description}?"`}>
-                        {confirm => (
-                            <form onSubmit={confirm(this.handleSubmit)}>
-                                <button className="btn btn-danger">delete</button>
-                            </form>
-                        )}
-                    </ConfirmStatusChange>
-                </td>
-            </tr>
-        )
-    }
+  return (
+    <Row>
+      <Col span={12}>
+        <Link to={"/edit/" + props.todo._id}>
+          <Button>Edit</Button>
+        </Link>
+      </Col>
+      <Popconfirm
+        title={`"Are you sure delete ${props.todo.todo_description}?"`}
+        okText="Yes"
+        cancelText="No"
+        onConfirm={handleSubmit}
+      >
+        <Button className="btn btn-danger">delete</Button>
+      </Popconfirm>
+    </Row>
+  );
 }
 
 export default Todo;

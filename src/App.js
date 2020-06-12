@@ -4,8 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Container } from "./style";
 import CreateTodo from "./components/CreateTodo/Create-todo";
 import EditTodo from "./components/Edit-todo";
-import TodosList from "./components/Todos-list";
-import DeleteTodo from "./components/Delete-todo";
+import TodosList from "./components/TodoList/Todos-list";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Header from "./components/Headers/Header";
@@ -31,7 +30,6 @@ function App() {
         <Route path="/sign-up" component={Signup} />
         <Route path="/edit/:id" component={EditTodo} />
         <Route path="/create" component={CreateTodo} />
-        <Route path="/delete/:id" component={DeleteTodo} />
         <Route path="/detail" component={DetailProfile} />
         <Footer />
       </Container>
