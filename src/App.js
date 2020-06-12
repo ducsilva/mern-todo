@@ -8,7 +8,7 @@ import TodosList from "./components/TodoList/Todos-list";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Header from "./components/Headers/Header";
-import Footer from "./components/Footer";
+import Footer from "./components/Footer/Footer";
 import DetailProfile from "./components/DetailProfile";
 
 function App() {
@@ -31,8 +31,8 @@ function App() {
         <Route path="/edit/:id" component={EditTodo} />
         <Route path="/create" component={CreateTodo} />
         <Route path="/detail" component={DetailProfile} />
-        <Footer />
       </Container>
+      <Footer />
     </Router>
   );
 }
