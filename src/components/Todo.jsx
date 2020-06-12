@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-
-import ConfirmStatusChange from './delete-todo.component';
+import ConfirmStatusChange from './Delete-todo';
 import "@reach/dialog/styles.css"
 import "../index.css"
 
