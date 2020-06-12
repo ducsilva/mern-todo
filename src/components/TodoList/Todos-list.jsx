@@ -1,12 +1,20 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Row, Col, Table, Checkbox, Button, Spin } from "antd";
+import {
+  Row,
+  Col,
+  Table,
+  Checkbox,
+  Button,
+  Spin,
+  AutoComplete,
+  Input,
+} from "antd";
 import Todo from "../Todo";
 import Loading from "../Loading";
 import { connect } from "react-redux";
 import { getTodos } from "../../actions";
-import Search from "../Search";
-import { TodoListContainer, CheckboxButton } from "./style";
+import { TodoListContainer, CheckboxButton, SearchComplete } from "./style";
 
 function TodosList() {
   const [todoList, setTodoList] = useState([]);
@@ -58,10 +66,28 @@ function TodosList() {
 
   return (
     <TodoListContainer>
-      <Search />
-      <CheckboxButton>
-        <Checkbox checked>Todos List</Checkbox>
-      </CheckboxButton>
+      <Row>
+        <Col span={6}>
+          <CheckboxButton>
+            <Checkbox checked>Todos List</Checkbox>
+          </CheckboxButton>
+        </Col>
+        <Col span={18}>
+          <SearchComplete>
+            <AutoComplete
+              dropdownMatchSelectWidth={252}
+              style={{ width: "50%" }}
+              options={todoList}
+              filterOption={(inputValue, option) => console.log(inputValue)}
+              // onSelect={onSelect}
+              // onSearch={handleSearch}
+            >
+              <Input.Search placeholder="Search todo here" enterButton />
+            </AutoComplete>
+          </SearchComplete>
+        </Col>
+      </Row>
+
       <Spin spinning={loading}>
         <Table
           dataSource={todoList}
