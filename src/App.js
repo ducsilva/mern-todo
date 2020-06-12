@@ -1,29 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import CreateTodo from "./components/Create-todo";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
+import { Container } from "./style";
+import CreateTodo from "./components/CreateTodo/Create-todo";
 import EditTodo from "./components/Edit-todo";
 import TodosList from "./components/Todos-list";
 import DeleteTodo from "./components/Delete-todo";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import Header from './components/Header';
-import Footer from './components/Footer';
+import Header from "./components/Headers/Header";
+import Footer from "./components/Footer";
 import DetailProfile from "./components/DetailProfile";
 
-
-function App(){
+function App() {
   const [localStore, setLocalStore] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem('user') !== null) {
-      setLocalStore(!localStorage)
+    if (localStorage.getItem("user") !== null) {
+      setLocalStore(!localStorage);
+    } else {
+      setLocalStore(localStorage);
     }
-    else {
-      setLocalStore(localStorage)
-    }
-  }, [localStore])
+  }, [localStore]);
   return (
     <Router>
+      <Container>
         <Header />
         <Route path="/" exact component={TodosList} />
         <Route path="/sign-in" component={Login} />
@@ -33,6 +34,7 @@ function App(){
         <Route path="/delete/:id" component={DeleteTodo} />
         <Route path="/detail" component={DetailProfile} />
         <Footer />
+      </Container>
     </Router>
   );
 }
