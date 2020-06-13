@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Container } from "./style";
 import CreateTodo from "./components/CreateTodo/Create-todo";
 import EditTodo from "./components/Edit-todo";
-import TodosList from "./components/TodoList/Todos-list";
+import TodosList from "./containers/TodoList";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Header from "./components/Headers/Header";

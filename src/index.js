@@ -1,20 +1,31 @@
+import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 import React from "react";
 import ReactDOM from "react-dom";
-import { createStore, applyMiddleware } from "redux";
-import createSagaMiddleware from "redux-saga";
-import { Provider } from "react-redux";
-import { logger } from "redux-logger";
-import reducer from "./reducers";
-import rootSaga from "./sagas";
 import "./index.css";
 import App from "./App";
-import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 
+import { createStore, applyMiddleware, compose } from "redux";
+import createSagaMiddleware from "redux-saga";
+import { Provider } from "react-redux";
+
+import { reducer } from "./reducers";
+import { watcherSaga } from "./sagas";
+
+// create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(reducer, applyMiddleware(sagaMiddleware, logger));
+// dev tools middleware
+const reduxDevTools =
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
 
-sagaMiddleware.run(rootSaga);
+// create a redux store with our reducer above and middleware
+let store = createStore(
+  reducer,
+  compose(applyMiddleware(sagaMiddleware), reduxDevTools)
+);
+
+// run the saga
+sagaMiddleware.run(watcherSaga);
 
 ReactDOM.render(
   <Provider store={store}>
@@ -22,7 +33,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
-
-if (module.hot) {
-  module.hot.accept(App);
-}

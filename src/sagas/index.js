@@ -1,20 +1,35 @@
-import { put, takeLatest, all } from 'redux-saga/effects';
+import { takeLatest, call, put } from "redux-saga/effects";
+import axios from "axios";
+//import action types
+import {
+  GET_ALL_TODOS_SUCCESS,
+  GET_ALL_TODOS,
+  GET_ALL_TODOS_FAIL,
+} from "../actions/actionTypes";
 
-function* fetchTodos() {
-
-    const json = yield fetch('http://localhost:4000/todos/')
-        .then(response => response.json());
-
-    yield put({ type: "TODOS_RECEIVED", json: json.articles || [{ error: json.message }] });
+// watcher saga: watches for actions dispatched to the store, starts worker saga
+export function* watcherSaga() {
+  yield takeLatest(GET_ALL_TODOS, workerSaga);
 }
 
-function* actionWatcher() {
-    yield takeLatest('GET_TODOS', fetchTodos)
+// function that makes the api request and returns a Promise for response
+function fetchTodoList() {
+  return axios({
+    method: "GET",
+    url: "http://localhost:4000/todos/",
+  });
 }
 
+// worker saga: makes the api call when watcher saga sees the action
+function* workerSaga() {
+  try {
+    const response = yield call(fetchTodoList);
+    const data = response.data;
 
-export default function* rootSaga() {
-    yield all([
-        actionWatcher(),
-    ]);
+    // dispatch a success action to the store with the new dog
+    yield put({ type: GET_ALL_TODOS_SUCCESS, data });
+  } catch (error) {
+    // dispatch a failure action to the store with the error
+    yield put({ type: GET_ALL_TODOS_FAIL, error });
+  }
 }

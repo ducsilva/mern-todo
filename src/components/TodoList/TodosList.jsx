@@ -16,22 +16,12 @@ import { connect } from "react-redux";
 import { getTodos } from "../../actions";
 import { TodoListContainer, CheckboxButton, SearchComplete } from "./style";
 
-function TodosList() {
-  const [todoList, setTodoList] = useState([]);
-  const [loading, setLoading] = useState(true);
+const TodosList = (props) => {
+  console.log("props==>>", props);
+  const { todoList, fetching, error, fetchTodoList } = props;
 
   useEffect(() => {
-    axios
-      .get("http://localhost:4000/todos/")
-      .then((response) => {
-        console.log("response===>>", response.data);
-        setTodoList(response.data);
-        setLoading(false);
-      })
-      .catch(function (error) {
-        console.log(error);
-        setLoading(false);
-      });
+    fetchTodoList();
   }, []);
 
   const columns = [
@@ -88,17 +78,18 @@ function TodosList() {
         </Col>
       </Row>
 
-      <Spin spinning={loading}>
+      <Spin spinning={fetching}>
         <Table
           dataSource={todoList}
           columns={columns}
           bordered
           pagination={{ pageSize: 5 }}
         />
+        {/* <Button onClick={fetchProducts}>fetchProducts</Button> */}
       </Spin>
     </TodoListContainer>
   );
-}
+};
 
-// export default connect(null, mapDispatchToProps)(TodosList);
 export default TodosList;
+// export default TodosList;

@@ -1,1 +1,3 @@
-export const GET_TODOS = "GET_TODOS";
+export const GET_ALL_TODOS = "GET_ALL_TODOS";
+export const GET_ALL_TODOS_SUCCESS = "GET_ALL_TODOS_SUCCESS";
+export const GET_ALL_TODOS_FAIL = "GET_ALL_TODOS_FAIL";
