@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import { Container } from "./style";
-import CreateTodo from "./components/CreateTodo/Create-todo";
+import CreateTodo from "./containers/CreateTodo";
 import EditTodo from "./components/Edit-todo";
 import TodosList from "./containers/TodoList";
 import Login from "./components/Login";

@@ -3,7 +3,8 @@ import axios from "axios";
 import { Row, Form, Input, Button, Radio } from "antd";
 import { CreateTodoContainer } from "./style";
 
-function CreateTodo() {
+function CreateTodo(props) {
+  const { createTodo } = props;
   const [todoDescription, setTodoDescription] = useState("");
   const [todoResponsible, setTodoResponsible] = useState("");
   const [todoPriority, setTodoPriority] = useState("");
@@ -21,17 +22,19 @@ function CreateTodo() {
       todo_priority: todoPriority,
       todo_completed: todoCompleted,
     };
-    axios
-      .post("http://localhost:4000/todos/add/", newTodo)
-      .then((res) => {
-        console.log(res.data);
-        setTodoCompleted(false);
-        setTodoDescription("");
-        setTodoResponsible("");
-        setTodoPriority("");
-        window.location.assign("/");
-      })
-      .catch((err) => console.log(err));
+    // axios
+    //   .post("http://localhost:4000/todos/add/", newTodo)
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     setTodoCompleted(false);
+    //     setTodoDescription("");
+    //     setTodoResponsible("");
+    //     setTodoPriority("");
+    //     window.location.assign("/");
+    //   })
+    //   .catch((err) => console.log(err));
+    debugger;
+    createTodo(newTodo);
   };
 
   const onChange = (e) => {
