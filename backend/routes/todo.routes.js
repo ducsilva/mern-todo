@@ -1,5 +1,5 @@
 module.exports = (app) => {
-  const todo = require("../controllers/todo.controller.js");
+  const Todo = require("../controllers/todo.controller.js");
 
   todoRoutes.route("/").get(function (req, res) {
     Todo.find(function (err, todos) {
@@ -42,7 +42,7 @@ module.exports = (app) => {
     todo
       .save()
       .then((todo) => {
-        res.status(200).json({ todo: "todo added successfully" });
+        res.status(200).json({ message: "todo added successfully" });
       })
       .catch((err) => {
         res.status(400).send("adding new todo failed");

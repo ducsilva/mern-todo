@@ -9,6 +9,7 @@ import {
   CREATE_TODO_SUCCESS,
   CREATE_TODO_FAIL,
 } from "../actions/actionTypes";
+import { notification, message } from "antd";
 
 // function that makes the api request and returns a Promise for response
 function fetchTodoList() {
@@ -46,11 +47,12 @@ function* createTodoSaga(payload) {
   console.log("payload==>>", payload);
 
   try {
-    debugger;
     axios
       .post("http://localhost:4000/todos/add/", payload)
       .then((res) => {
-        console.log(res);
+        const data = res.data;
+        const { todos } = data;
+        notification.success({ message: todos });
       })
       .catch((err) => console.log(err));
 

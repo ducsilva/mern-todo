@@ -33,7 +33,6 @@ function CreateTodo(props) {
     //     window.location.assign("/");
     //   })
     //   .catch((err) => console.log(err));
-    debugger;
     createTodo(newTodo);
   };
 
