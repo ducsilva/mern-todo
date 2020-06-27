@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Row, Form, Input, Button, Radio } from "antd";
+import { Row, Form, Input, Button, Radio, Spin } from "antd";
 import { CreateTodoContainer } from "./style";
 
 function CreateTodo(props) {
-  const { createTodo } = props;
+  const { createTodo, isFetching } = props;
   const [todoDescription, setTodoDescription] = useState("");
   const [todoResponsible, setTodoResponsible] = useState("");
   const [todoPriority, setTodoPriority] = useState("");
@@ -40,61 +40,65 @@ function CreateTodo(props) {
     setTodoPriority(e.target.value);
   };
   return (
-    <Row gutter={[16, 16]}>
-      <CreateTodoContainer>
-        <h2> Create Todo </h2>
-        <Row className="form">
-          <Form
-            {...layout}
-            name="basic"
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-          >
-            <Form.Item
-              label="CreateTodo"
-              name="todoDescription"
-              rules={[{ required: true, message: "Please input todo!" }]}
-              value={todoDescription}
+    <Spin spinning={isFetching}>
+      <Row gutter={[16, 16]}>
+        <CreateTodoContainer>
+          <h2> Create Todo </h2>
+          <Row className="form">
+            <Form
+              {...layout}
+              name="basic"
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
             >
-              <Input value={todoDescription} />
-            </Form.Item>
-
-            <Form.Item
-              label="ToDoResponsible"
-              name="todoResponsible"
-              rules={[{ required: true, message: "Please input responsive!" }]}
-              value={todoResponsible}
-            >
-              <Input value={todoResponsible} />
-            </Form.Item>
-
-            <Row className="radio">
-              <Radio.Group
-                onChange={onChange}
-                value={todoPriority}
-                label="todoPriority"
+              <Form.Item
+                label="CreateTodo"
+                name="todoDescription"
+                rules={[{ required: true, message: "Please input todo!" }]}
+                value={todoDescription}
               >
-                <Radio value="Low" checked={todoPriority === "Low"}>
-                  Low
-                </Radio>
-                <Radio value="Medium" checked={todoPriority === "Medium"}>
-                  Medium
-                </Radio>
-                <Radio value="High" checked={todoPriority === "High"}>
-                  High
-                </Radio>
-              </Radio.Group>
-            </Row>
+                <Input value={todoDescription} />
+              </Form.Item>
 
-            <Row className="button">
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Row>
-          </Form>
-        </Row>
-      </CreateTodoContainer>
-    </Row>
+              <Form.Item
+                label="ToDoResponsible"
+                name="todoResponsible"
+                rules={[
+                  { required: true, message: "Please input responsive!" },
+                ]}
+                value={todoResponsible}
+              >
+                <Input value={todoResponsible} />
+              </Form.Item>
+
+              <Row className="radio">
+                <Radio.Group
+                  onChange={onChange}
+                  value={todoPriority}
+                  label="todoPriority"
+                >
+                  <Radio value="Low" checked={todoPriority === "Low"}>
+                    Low
+                  </Radio>
+                  <Radio value="Medium" checked={todoPriority === "Medium"}>
+                    Medium
+                  </Radio>
+                  <Radio value="High" checked={todoPriority === "High"}>
+                    High
+                  </Radio>
+                </Radio.Group>
+              </Row>
+
+              <Row className="button">
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
+              </Row>
+            </Form>
+          </Row>
+        </CreateTodoContainer>
+      </Row>
+    </Spin>
   );
 }
 

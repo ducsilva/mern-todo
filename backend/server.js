@@ -60,7 +60,9 @@ todoRoutes.route("/add").post(function (req, res) {
   todo
     .save()
     .then((todo) => {
-      res.status(200).json({ "todos": "todo added successfully", todo });
+      console.log(todo);
+
+      res.status(200).json({ message: "todo added successfully", todo });
     })
     .catch((err) => {
       res.status(400).send("adding new todo failed");

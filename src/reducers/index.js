@@ -29,23 +29,29 @@ export function reducer(state = initialState, action) {
     case CREATE_TODO:
       return { ...state, fetching: true, error: null };
     case CREATE_TODO_SUCCESS:
-      let newTodo = [
-        ...state,
-        {
-          id: action.id,
-          todo_description: action.todo_description,
-          todo_responsible: action.todo_responsible,
-          todo_priority: action.todo_priority,
-          todo_completed: action.todo_completed,
-        },
-      ];
-      console.log("newTodo===>>", newTodo);
-      return {
-        ...state,
-        todoList: newTodo,
+      const newTodo = action.payload.newTodo;
+      const {
+        _id,
+        todo_completed,
+        todo_description,
+        todo_priority,
+        todo_responsible,
+      } = newTodo;
+      return Object.assign({}, state, {
+        // ...state,
+        todoList: [
+          {
+            id: _id,
+            todo_completed: todo_completed,
+            todo_description: todo_description,
+            todo_priority: todo_priority,
+            todo_responsible: todo_responsible,
+          },
+          ...state.todoList,
+        ],
         fetching: false,
         error: "",
-      };
+      });
     case CREATE_TODO_FAIL:
       return { ...state, fetching: false, todoList: null, error: action.error };
     default:

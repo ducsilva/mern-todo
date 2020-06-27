@@ -1,4 +1,4 @@
-import { takeLatest, call, put, all } from "redux-saga/effects";
+import { takeLatest, call, put, all, delay } from "redux-saga/effects";
 import axios from "axios";
 //import action types
 import {
@@ -24,7 +24,7 @@ function* getTodoListSaga() {
   try {
     const response = yield call(fetchTodoList);
     const data = response.data;
-
+    yield delay(500);
     // dispatch a success action to the store with the new dog
     yield put({ type: GET_ALL_TODOS_SUCCESS, data });
   } catch (error) {
@@ -44,15 +44,14 @@ function* getTodoListSaga() {
 
 // worker saga: makes the api call when watcher saga sees the action
 function* createTodoSaga(payload) {
-  console.log("payload==>>", payload);
-
   try {
+    yield delay(500);
     axios
       .post("http://localhost:4000/todos/add/", payload)
       .then((res) => {
         const data = res.data;
-        const { todos } = data;
-        notification.success({ message: todos });
+        const { message } = data;
+        notification.success({ message: message });
       })
       .catch((err) => console.log(err));
 
