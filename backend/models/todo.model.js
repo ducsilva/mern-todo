@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const TodoSchema = mongoose.Schema;
 
-let Todo = new Schema({
+let Todo = new TodoSchema({
     todo_description: {
         type: String
     },
